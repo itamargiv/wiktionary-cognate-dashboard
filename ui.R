@@ -125,7 +125,8 @@ shinyUI(
                                      HTML('<p style="font-size:80%;"align="right"><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard" 
                                           target= "_blank">Documentation</a><br><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard/Interface" 
                                           target = "_blank">Help translating the interface</a><br><a href = "https://analytics.wikimedia.org/datasets/wmde-analytics-engineering/Wiktionary/" 
-                                          target = "_blank">Public datasets</a></p>'),
+                                          target = "_blank">Public datasets</a><br><a href = "https://github.com/wikimedia/analytics-wmde-WiktionaryCognateDashboard" 
+                                          target = "_blank">GitHub</a></p>'),
                                      htmlOutput('updateString')
                                      )
                                      ),
@@ -192,7 +193,8 @@ shinyUI(
                                      HTML('<p style="font-size:80%;"align="right"><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard" 
                                           target= "_blank">Documentation</a><br><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard/Interface" 
                                           target = "_blank">Help translating the interface</a><br><a href = "https://analytics.wikimedia.org/datasets/wmde-analytics-engineering/Wiktionary/" 
-                                          target = "_blank">Public datasets</a></p>')
+                                          target = "_blank">Public datasets</a><br><a href = "https://github.com/wikimedia/analytics-wmde-WiktionaryCognateDashboard" 
+                                          target = "_blank">GitHub</a></p>')
                               )
                                      ),
                             fluidRow(
@@ -235,7 +237,8 @@ shinyUI(
                                      HTML('<p style="font-size:80%;"align="right"><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard" 
                                           target= "_blank">Documentation</a><br><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard/Interface" 
                                           target = "_blank">Help translating the interface</a><br><a href = "https://analytics.wikimedia.org/datasets/wmde-analytics-engineering/Wiktionary/" 
-                                          target = "_blank">Public datasets</a></p>')
+                                          target = "_blank">Public datasets</a><br><a href = "https://github.com/wikimedia/analytics-wmde-WiktionaryCognateDashboard" 
+                                          target = "_blank">GitHub</a></p>')
                               )
                                      ),
                             fluidRow(
@@ -278,7 +281,8 @@ shinyUI(
                                      HTML('<p style="font-size:80%;"align="right"><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard" 
                                           target= "_blank">Documentation</a><br><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard/Interface" 
                                           target = "_blank">Help translating the interface</a><br><a href = "https://analytics.wikimedia.org/datasets/wmde-analytics-engineering/Wiktionary/" 
-                                          target = "_blank">Public datasets</a></p>')
+                                          target = "_blank">Public datasets</a><br><a href = "https://github.com/wikimedia/analytics-wmde-WiktionaryCognateDashboard" 
+                                          target = "_blank">GitHub</a></p>')
                               )
                             ),
                             fluidRow(
@@ -328,7 +332,8 @@ shinyUI(
                                    HTML('<p style="font-size:80%;"align="right"><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard" 
                                           target= "_blank">Documentation</a><br><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard/Interface" 
                                           target = "_blank">Help translating the interface</a><br><a href = "https://analytics.wikimedia.org/datasets/wmde-analytics-engineering/Wiktionary/" 
-                                          target = "_blank">Public datasets</a></p>')
+                                          target = "_blank">Public datasets</a><br><a href = "https://github.com/wikimedia/analytics-wmde-WiktionaryCognateDashboard" 
+                                          target = "_blank">GitHub</a></p>')
                             )
                                    ),
                           fluidRow(
@@ -382,7 +387,8 @@ shinyUI(
                                    HTML('<p style="font-size:80%;"align="right"><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard" 
                                           target= "_blank">Documentation</a><br><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard/Interface" 
                                           target = "_blank">Help translating the interface</a><br><a href = "https://analytics.wikimedia.org/datasets/wmde-analytics-engineering/Wiktionary/" 
-                                          target = "_blank">Public datasets</a></p>')
+                                          target = "_blank">Public datasets</a><br><a href = "https://github.com/wikimedia/analytics-wmde-WiktionaryCognateDashboard" 
+                                          target = "_blank">GitHub</a></p>')
                             )
                             ),
                           fluidRow(
