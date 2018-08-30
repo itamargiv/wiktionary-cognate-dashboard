@@ -44,6 +44,7 @@ setwd('/srv/shiny-server/Wiktionary_CognateDashboard/data')
 
 ### --- Update string:
 updateString <- readLines('cognateUpdateString.txt')
+updateString <- paste0(updateString, ' UTC')
 
 ### --- Fetch data: cognateLinksDT.csv
 wiktionariesDT <- read.csv('cognateLinksDT.csv',
@@ -92,6 +93,11 @@ antihubnodes <- nodes
 antihubnodes$value <- sapply(antihubnodes$id, function(x) {
   round(log(length(which(n_edges$to == x)) + 1)) + 1
 })
+
+### --- Fetch data: most popular entries
+mostPopular <- fread('mostPopularEntries.csv')
+mostPopular$V1 <- NULL
+colnames(mostPopular) <- c('Entry', 'In how many Wiktionaries?')
 
 ### --- Fetch data: missing entries per project
 setwd('/srv/shiny-server/Wiktionary_CognateDashboard/data/projectData')
@@ -391,10 +397,9 @@ shinyServer(function(input, output, session) {
   ### --- output$projectDTMiss
   output$projectDTMiss <- DT::renderDataTable({
     datatable(projectDatasetMiss(),
-              options = list(
-                pageLength = 100,
-                width = '100%',
-                columnDefs = list(list(className = 'dt-center', targets = "_all"))
+              options = list(pageLength = 100,
+                             width = '100%',
+                             columnDefs = list(list(className = 'dt-center', targets = "_all"))
               ),
               rownames = FALSE
     )
@@ -494,7 +499,7 @@ shinyServer(function(input, output, session) {
                     
                   })
   
-  ### --- output$projectDTMiss
+  ### --- output$compareDataSetDT
   output$compareDataSetDT <- DT::renderDataTable({
     
     if (input$selectMyWiktionaryEntries_Source != input$selectMyWiktionaryEntries_Target) {
@@ -512,6 +517,7 @@ shinyServer(function(input, output, session) {
       datatable(cD,
                 escape = F,
                 options = list(
+                  ordering = F,
                   pageLength = 100,
                   width = '100%',
                   columnDefs = list(list(className = 'dt-center', targets = "_all"))
@@ -525,6 +531,8 @@ shinyServer(function(input, output, session) {
       datatable(cD,
                 escape = F,
                 options = list(
+                  dom = 't', 
+                  ordering = F,
                   pageLength = 100,
                   width = '100%',
                   columnDefs = list(list(className = 'dt-center', targets = "_all"))
@@ -548,6 +556,42 @@ shinyServer(function(input, output, session) {
     contentType = "text/csv"
   )
   
+  ### ----------------------------------
+  ### --- TAB: Most Popular
+  ### ----------------------------------
+  
+  ### --- instructions
+  output$instructions_MostPopular <- renderText({
+    instructionsFile()[7]
+  })
+  
+  ### --- output$mostPopularDT
+  output$mostPopularDT <- DT::renderDataTable({
+    datatable(mostPopular,
+              options = list(ordering = F,
+                             pageLength = 100,
+                             width = '100%',
+                             columnDefs = list(list(className = 'dt-center', targets = "_all"))
+              ),
+              rownames = FALSE
+    )
+  }) %>% withProgress(message = 'Generating data',
+                      min = 0,
+                      max = 1,
+                      value = 1, {incProgress(amount = 1)})
+  
+  ### --- output$download_mostPopularDT
+  output$download_mostPopularDT <- downloadHandler(
+    filename = function() {
+      'MostPopularEntries_Dataset.csv'},
+    content = function(file) {
+      write.csv(mostPopular,
+                file,
+                quote = FALSE,
+                row.names = FALSE)
+    },
+    contentType = "text/csv"
+  )
   
   }) ### --- END shinyServer
 

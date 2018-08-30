@@ -85,6 +85,9 @@ shinyUI(
                     ),
                     menuItem(text = "Compare", 
                              tabName = "compare",
+                             icon = icon("barcode")),
+                    menuItem(text = "Most Popular", 
+                             tabName = "mostpopular",
                              icon = icon("barcode"))
                   )
                 ),
@@ -438,7 +441,53 @@ shinyUI(
                                    br()
                             )
                           )
+                          ),
+                  
+                  ### --- TAB: Most Popular
+                  ### --------------------------------
+                  
+                  tabItem(tabName = "mostpopular",
+                          fluidRow(
+                            column(width = 6,
+                                   htmlOutput('instructions_MostPopular')
+                            ),
+                            column(width = 6,
+                                   HTML('<p style="font-size:80%;"align="right"><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard" 
+                                        target= "_blank">Documentation</a><br><a href = "https://meta.wikimedia.org/wiki/Wiktionary_Cognate_Dashboard/Interface" 
+                                        target = "_blank">Help translating the interface</a><br><a href = "https://analytics.wikimedia.org/datasets/wmde-analytics-engineering/Wiktionary/" 
+                                        target = "_blank">Public datasets</a><br><a href = "https://github.com/wikimedia/analytics-wmde-WiktionaryCognateDashboard" 
+                                        target = "_blank">GitHub</a></p>')
+                                   )
+                                   ),
+                          fluidRow(
+                            column(width = 12, 
+                                   h3("Most Popular Entres")
+                            )
+                          ),
+                          fluidRow(
+                            column(width = 12, 
+                                   downloadButton('download_mostPopularDT',
+                                                  'Download (csv)'),
+                                   hr(),
+                                   withSpinner(DT::dataTableOutput('mostPopularDT', width = "35%"))
+                            )
+                          ),
+                          fluidRow(
+                            column(width = 1,
+                                   br(),
+                                   img(src = 'WiktionaryLogo.png',
+                                       align = "left")
+                            ),
+                            column(width = 11,
+                                   hr(),
+                                   HTML('<b>Wiktionary Cognate Dashboard :: WMDE 2018</b><br>'),
+                                   HTML('<b>Contact:</b> Goran S. Milovanovic, Data Scientist, WMDE<br><b>e-mail:</b> goran.milovanovic_ext@wikimedia.de
+                          <br><b>IRC:</b> goransm'),
+                                   br(),
+                                   br()
+                            )
                           )
+                                   )
                   
                   
                 ) ### --- END tabItems
