@@ -291,7 +291,7 @@ write.csv(n_edges, "n_edges.csv")
 
 ### ---------------------------------------------------------------------------
 ### ---------------------------------------------------------------------------
-### --- B1. Most interlinked entries not having a page on your own wiki
+### --- B. Most interlinked entries not having a page on your own wiki
 ### --- SQL Approach
 ### ---------------------------------------------------------------------------
 ### ---------------------------------------------------------------------------
@@ -384,6 +384,14 @@ cognateEntries <- cognateEntries %>%
   arrange(desc(entryCount)) %>% 
   filter(entryCount > 2)
 
+# - produce a reduced version of cognateEntires
+# - for the Dashboard's Most Popular entries tab
+mostPopularEntries <- cognateEntries %>% 
+  arrange(desc(entryCount)) %>% 
+  filter(entryCount >= 10)
+write.csv(mostPopularEntries, file = "mostPopularEntries.csv")
+
+
 ### --- find missing entries w. counts per project
 # - toReport
 print("Iterate across projects.")
@@ -442,6 +450,9 @@ system(command =
          'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/searchEntries.Rds /srv/published-datasets/wmde-analytics-engineering/Wiktionary/', 
        wait = T)
 
+system(command = 
+         'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/mostPopularEntries.csv /srv/published-datasets/wmde-analytics-engineering/Wiktionary/', 
+       wait = T)
 
 # - copy to: /srv/published-datasets/wmde-analytics-engineering/Wiktionary/projectData
 system(command = 'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/projectData/* /srv/published-datasets/wmde-analytics-engineering/Wiktionary/projectData', wait = T)
