@@ -345,15 +345,17 @@ for (i in 1:length(clients)) {
       return(NULL)
     }
   )
-  if (!is.null(entries)) {
+  if (!(sum(dim(entries)) == 0)) {
     c <- c + 1
     entries <- entries[!duplicated(entries), ] 
-    entries$project <- clients[i]
-    entries <- entries[!(grepl("main_page", entries$page_title, ignore.case = T)), ]
-    if (dim(entries)[1] >= 1) {
-      write.csv(entries, paste0("projectData/", clients[i], "_entries.csv"))
+    if (dim(entries)[1] > 0) {
+      entries$project <- clients[i]
+      entries <- entries[!(grepl("main_page", entries$page_title, ignore.case = T)), ]
+      if (dim(entries)[1] >= 1) {
+        write.csv(entries, paste0("projectData/", clients[i], "_entries.csv"))
+      }
+      wiktionaryEntries[[c]] <- entries
     }
-    wiktionaryEntries[[c]] <- entries
     rm(entries)
     print(paste0("Total time elapsed: ", Sys.time() - tStart))
   } else {
@@ -366,12 +368,11 @@ for (i in 1:length(clients)) {
 wiktionaryEntries <- rbindlist(wiktionaryEntries)
 # - remove instances of 'Main_Page' and 'main_Page'
 wiktionaryEntries <- wiktionaryEntries[!(grepl("main_page", wiktionaryEntries$page_title, ignore.case = T)), ]
-wiktionaryEntries <- as.data.table(wiktionaryEntries)
 
 ### --- entry counts
 cognateEntries <- wiktionaryEntries[ , `:=`(entryCount = .N) , by = page_title]
 cognateEntries <- cognateEntries[, c(1, 3)]
-cognateEntries <- cognateEntries[!duplicated(cognateEntries), ]
+cognateEntries <- cognateEntries[!duplicated(as.data.frame(cognateEntries)), ]
 
 # - store entities for search vector comparisons
 searchEntries <- data.frame(entry = cognateEntries$page_title, 
@@ -390,7 +391,6 @@ mostPopularEntries <- cognateEntries %>%
   arrange(desc(entryCount)) %>% 
   filter(entryCount >= 10)
 write.csv(mostPopularEntries, file = "mostPopularEntries.csv")
-
 
 ### --- find missing entries w. counts per project
 # - toReport
@@ -445,17 +445,15 @@ system(command =
 system(command = 
          'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/searchEntries.csv /srv/published-datasets/wmde-analytics-engineering/Wiktionary/', 
        wait = T)
-
 system(command = 
          'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/searchEntries.Rds /srv/published-datasets/wmde-analytics-engineering/Wiktionary/', 
        wait = T)
-
 system(command = 
          'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/mostPopularEntries.csv /srv/published-datasets/wmde-analytics-engineering/Wiktionary/', 
        wait = T)
-
 # - copy to: /srv/published-datasets/wmde-analytics-engineering/Wiktionary/projectData
-system(command = 'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/projectData/* /srv/published-datasets/wmde-analytics-engineering/Wiktionary/projectData', wait = T)
+system(command = 'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/projectData/* /srv/published-datasets/wmde-analytics-engineering/Wiktionary/projectData', 
+       wait = T)
 
 # - toReport
 print(paste0("Update completed on: ", Sys.time()))
@@ -463,7 +461,8 @@ print(paste0("Update completed on: ", Sys.time()))
 # - update string
 write(paste0("Last updated on: ", Sys.time()), "cognateUpdateString.txt")
 # - copy update string to: /srv/published-datasets/wmde-analytics-engineering/Wiktionary/
-system(command = 'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/cognateUpdateString.txt /srv/published-datasets/wmde-analytics-engineering/Wiktionary/', wait = T)
+system(command = 'cp /home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/cognateUpdateString.txt /srv/published-datasets/wmde-analytics-engineering/Wiktionary/', 
+       wait = T)
 
 
 
