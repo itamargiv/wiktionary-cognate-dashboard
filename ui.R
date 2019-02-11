@@ -461,7 +461,7 @@ shinyUI(
                                    ),
                           fluidRow(
                             column(width = 12, 
-                                   h3("Most Popular Entres")
+                                   h3("Most Popular Entries")
                             )
                           ),
                           fluidRow(

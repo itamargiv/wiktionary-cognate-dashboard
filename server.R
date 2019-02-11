@@ -468,17 +468,17 @@ shinyServer(function(input, output, session) {
                       ### --- compareDataSet
                       if (is.null(targetWiktionary) | is.null(sourceWiktionary)) {
                         cmpData <- NULL
-                        rm(sWiktionary); rm(tWiktionary)
+                        rm(sWiktionary); rm(tWiktionary); rm(sourceWiktionary); rm(targetWiktionary) 
                       } else {
                         ### --- load searchEntries.Rds
                         searchEntries <- readRDS('/srv/shiny-server/Wiktionary_CognateDashboard/data/searchEntries.Rds')
                         incProgress(0.2, detail = "Loading Entries.")
-                        wIx <- which(sWiktionary - tWiktionary == -1)
+                        wIx <- which(sourceWiktionary - targetWiktionary == -1)
                         cmpData <- data.frame(entry = searchEntries$entry[wIx],
                                               stringsAsFactors = F)
                         incProgress(0.2, detail = "Sorting result.")
                         cmpData <- arrange(cmpData, entry)
-                        rm(sWiktionary); rm(tWiktionary); rm(searchEntries)
+                        rm(sWiktionary); rm(tWiktionary); rm(sourceWiktionary); rm(targetWiktionary); rm(searchEntries)
                       }
                     })
                     
