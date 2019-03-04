@@ -42,6 +42,8 @@
 ### --- If not, see <http://www.gnu.org/licenses/>.
 ### ---------------------------------------------------------------------------
 
+### - analytics-mysql cognate_wiktionary -e 'show tables' --use-x1
+
 ### ---------------------------------------------------------------------------
 ### --- Setup
 library(data.table)
@@ -73,12 +75,14 @@ print(paste0("Initiate Cognate Wiktionary Dashboard update on: ", generalT1))
 ### --- Export cognate_wiktionary.cognate_pages
 # - toReport
 print("Export cognate_wiktionary.cognate_pages now.")
-sqlLogIn <- 'mysql --defaults-file=/etc/mysql/conf.d/analytics-research-client.cnf -h analytics-store.eqiad.wmnet -A -e'
-query <- '"USE cognate_wiktionary; SELECT cgpa_site, cgpa_title FROM cognate_pages WHERE cgpa_namespace = 0;"'
+sqlLogInPre <- 'analytics-mysql cognate_wiktionary -e'
+sqlLogInPost <- '--use-x1'
+query <- '\'SELECT cgpa_site, cgpa_title FROM cognate_pages WHERE cgpa_namespace = 0;\''
 outFile <- '> /srv/home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/cognate_pages0.tsv'
-sQuery <- paste(sqlLogIn, 
+sQuery <- paste(sqlLogInPre, 
                 query, 
-                outFile, 
+                outFile,
+                sqlLogInPost,
                 sep = " ")
 system(sQuery, 
        wait = T)
@@ -86,12 +90,14 @@ system(sQuery,
 ### --- Export cognate_wiktionary.cognate_sites
 # - toReport
 print("Export cognate_wiktionary.cognate_sites now.")
-sqlLogIn <- 'mysql --defaults-file=/etc/mysql/conf.d/analytics-research-client.cnf -h analytics-store.eqiad.wmnet -A -e'
+sqlLogInPre <- 'analytics-mysql cognate_wiktionary -e'
+sqlLogInPost <- '--use-x1'
 query <- '"USE cognate_wiktionary; SELECT * FROM cognate_sites;"'
 outFile <- '> /srv/home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/cognate_sites.tsv'
-sQuery <- paste(sqlLogIn, 
+sQuery <- paste(sqlLogInPre, 
                 query, 
-                outFile, 
+                outFile,
+                sqlLogInPost,
                 sep = " ")
 system(sQuery, 
        wait = T)
@@ -99,12 +105,14 @@ system(sQuery,
 ### --- Export cognate_wiktionary.cognate_titles
 # - toReport
 print("Export cognate_wiktionary.cognate_titles now.")
-sqlLogIn <- 'mysql --defaults-file=/etc/mysql/conf.d/analytics-research-client.cnf -h analytics-store.eqiad.wmnet -A -e'
+sqlLogInPre <- 'analytics-mysql cognate_wiktionary -e'
+sqlLogInPost <- '--use-x1'
 query <- '"USE cognate_wiktionary; SELECT * FROM cognate_titles;"'
 outFile <- '> /srv/home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/cognate_titles.tsv'
-sQuery <- paste(sqlLogIn, 
+sQuery <- paste(sqlLogInPre, 
                 query, 
                 outFile, 
+                sqlLogInPost,
                 sep = " ")
 system(sQuery, 
        wait = T)
@@ -303,13 +311,11 @@ rm(list = ls()); gc()
 print("Finding missing entries from Wiktionaries.")
 
 ### --- select all wiktionaries
-# - show all databases
-mySqlArgs <- 
-  '--defaults-file=/etc/mysql/conf.d/analytics-research-client.cnf -h analytics-store.eqiad.wmnet -A'
-mySqlInput <- '"SHOW DATABASES;" > /srv/home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/wiktionary_databases.tsv'
+# - show all databases from x1-analytics-replica.eqiad.wmnet
+mySqlInput <- 'mysql -h x1-analytics-replica.eqiad.wmnet -P 3320 -e "SHOW DATABASES;" > /srv/home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/wiktionary_databases.tsv'
 # - command:
-mySqlCommand <- paste0("mysql ", mySqlArgs, " -e ", mySqlInput, collapse = "")
-system(command = mySqlCommand, wait = TRUE)
+system(command = mySqlInput, 
+       wait = TRUE)
 # - get databases
 clients <- read.table('wiktionary_databases.tsv', 
                       header = T, 
@@ -331,13 +337,11 @@ for (i in 1:length(clients)) {
   print(paste0("Fetching now project ", i, "/", length(clients), ": ", clients[i], "."))
   entries <- tryCatch(
     {
-      mySqlArgs <- 
-        '--defaults-file=/etc/mysql/conf.d/analytics-research-client.cnf -h analytics-store.eqiad.wmnet -A'
-      mySqlInput <- paste0('"USE ', 
-                           clients[i], 
-                           '; SELECT page_title FROM page WHERE page_namespace = 0;" > /srv/home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/currentWiktionary.tsv')
+      sqlLogInPre <- paste0('analytics-mysql ', 
+                            clients[i], ' -e ')
+      mySqlInput <- paste0('\'SELECT page_title FROM page WHERE page_namespace = 0;\' > /srv/home/goransm/RScripts/Wiktionary/Wiktionary_CognateDashboard/currentWiktionary.tsv')
       # - command:
-      mySqlCommand <- paste0("mysql ", mySqlArgs, " -e ", mySqlInput, collapse = "")
+      mySqlCommand <- paste0(sqlLogInPre, mySqlInput)
       system(command = mySqlCommand, wait = TRUE)
       fread('currentWiktionary.tsv', sep = "\t", quote = "")
       },
