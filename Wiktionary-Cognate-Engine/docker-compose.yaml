@@ -1,0 +1,29 @@
+### ---------------------------------------------------------------------------
+### --- Project: Wiktionary Cognate Dashboard
+### --- Version 1.0.0
+### --- Script: wiktionarycognaterevolver.R
+### --- January 2022.
+### --- Author: Goran S. Milovanovic, Data Scientist, WMDE
+### --- Developed under the contract between Goran Milovanovic PR Data Kolektiv
+### --- and WMDE.
+### --- Description: data update for the Wiktionary Cognate Dashboard
+### --- Contact: goran.milovanovic_ext@wikimedia.de
+### ---------------------------------------------------------------------------
+
+version: "3.0"
+
+services:
+  wiktionarycognaterev:
+    container_name: wiktionarycognaterevolver
+    # To build the image locally, comment out "image" below, and uncomment
+    # "build" and the lines indented under it.
+    image: wiktionarycognaterevolver-img
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    user: 'root'
+    volumes: 
+      - /home/goransm/_Img/_wiktionary_data:/app/_wiktionary_data
+      - /home/goransm/_Img/_wiktionary_data/projectData:/app/_wiktionary_data/projectData
+      - /home/goransm/_Img/_wiktionary_data/instructions:/app/_wiktionary_data/instructions
