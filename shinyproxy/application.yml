@@ -17,7 +17,7 @@ proxy:
   specs:
   - id: Wiktionary_CognateDashboard
     display-name: Wiktionary Cognate Dashboard
-    description: Wiktionary Analytics.
+    description: Wiktionary Cognate Dashboard
     container-image: wiktionarycognate-img
     container-network: wd-analytics-net
     container-volumes: [ "/home/goransm/_Img/_wiktionary_data:/app/_wiktionary_data:/build_zone/_wiktionary_data", "/home/goransm/_Img/_wiktionary_data/projectData:/build_zone/_wiktionary_data/projectData", "/home/goransm/_Img/_wiktionary_data/instructions:/build_zone/_wiktionary_data/instructions" ]
