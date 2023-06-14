@@ -24,6 +24,6 @@ services:
     restart: always
     user: 'root'
     volumes: 
-      - /home/goransm/_Img/_wiktionary_data:/app/_wiktionary_data
-      - /home/goransm/_Img/_wiktionary_data/projectData:/app/_wiktionary_data/projectData
-      - /home/goransm/_Img/_wiktionary_data/instructions:/app/_wiktionary_data/instructions
+      - ../_wiktionary_data:/app/_wiktionary_data
+      - ../_wiktionary_data/projectData:/app/_wiktionary_data/projectData
+      - ../_wiktionary_data/instructions:/app/_wiktionary_data/instructions
