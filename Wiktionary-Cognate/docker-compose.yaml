@@ -21,9 +21,9 @@ services:
       - '80:3838'
     volumes:
       - 'shiny_logs:/var/log/shiny-server'
-      - '/home/goransm/_Img/_wiktionary_data:/app/_wiktionary_data:/build_zone/_wiktionary_data'
-      - '/home/goransm/_Img/_wiktionary_data/projectData:/build_zone/_wiktionary_data/projectData'
-      - '/home/goransm/_Img/_wiktionary_data/instructions:/app/_wiktionary_data/instructions:/build_zone/_wiktionary_data/instructions'
+      - '../_wiktionary_data:/build_zone/_wiktionary_data'
+      - '../_wiktionary_data/projectData:/build_zone/_wiktionary_data/projectData'
+      - '../_wiktionary_data/instructions:/build_zone/_wiktionary_data/instructions'
 
 volumes:
   shiny_logs:
